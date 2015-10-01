@@ -1,0 +1,30 @@
+//pku 2840
+#include <iostream>
+#include <string>
+#include <cstdlib>
+using namespace std;
+int main()
+{
+    int T;
+    cin >> T;
+    string timeStr;
+    string H;
+    string M;
+    while(T--) {
+        cin >> timeStr;
+        string::size_type tagPos = timeStr.find(":");//·Ö¸î×Ö·û´®
+        H = timeStr.substr(0, tagPos);
+        M = timeStr.substr(tagPos + 1, timeStr.length() - tagPos - 1);
+        int iH = atoi(H.c_str());
+        int iM = atoi(M.c_str());
+        if(iM > 0) {
+            cout << 0 << endl;
+        } else {
+            int strikes = iH + 12;
+            if(strikes > 24)
+                strikes -= 24;
+            cout << strikes << endl;
+        }
+    }
+    return 0;
+}

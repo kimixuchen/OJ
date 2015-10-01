@@ -1,0 +1,60 @@
+//made by xuchen
+
+#include <iostream>
+using namespace std;
+
+const int N=80005;
+int h[N];
+int num[N],maxx[N];
+
+int main(){
+    int n,k;
+    unsigned long long ans = 0;
+    while(cin>>n){
+        ans=0;
+        for(int i=0; i<n; i++){
+            cin>>h[i];
+
+        }
+        num[n-1]=0; maxx[n-1]=-1;
+
+        for(int i=n-2; i>=0; i--){
+            if(h[i]<h[i+1]){
+                num[i]=0; maxx[i]=i+1;          //6 10 3 7 4 12 2
+            }
+            else{
+                k=i+1;
+                while(k!=-1 && h[k]<h[i]){
+                    num[i]+=(num[k]+1);
+                    k=maxx[k];
+                }
+                maxx[i]=k;
+                ans+=num[i];
+            }
+
+
+
+        }
+    cout<<ans<<endl;
+    }
+
+return 0;
+}
+
+
+//made by shangke7788
+
+#include <stdio.h>
+
+int a[80010], n, top;
+int main() {
+scanf("%d", &n);
+long long ans = 0;
+while (n --) {
+int x; scanf("%d", &x);
+while (top && a[top-1] <= x) top --;
+ans += top;
+a[top++] = x;
+}
+printf("%lld\n", ans);
+return 0;

@@ -1,0 +1,27 @@
+#include <iostream>
+#include <iomanip>
+#include <cstring>
+using namespace std;
+
+double dp[10000];
+int a[15];
+int main(){
+    int n,i,t,c;
+    while(cin>>n && n!=-1){
+        i=0;c=0;
+        memset(dp,0,sizeof(dp));
+        a[i++]=n;
+        dp[2*n]=true;
+        while(cin>>t && t){
+            a[i++]=t;
+            dp[t*2]=true;
+        }
+        for(int k=0; k<i; k++){
+            if(dp[a[k]])
+                c++;
+        }
+        cout<<c<<endl;
+    }
+return 0;
+}
+//本题有更好解法
