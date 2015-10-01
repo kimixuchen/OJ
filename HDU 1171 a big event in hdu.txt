@@ -1,0 +1,42 @@
+#include<cstdio>
+#include<cstring>
+#include<cmath>
+#include<algorithm>
+#include<iostream>
+using namespace std;
+
+const int MAX=250005;
+bool dp[MAX]; //all possible group
+int val[55]; //different value
+int num[55]; //number of facillities
+
+int main()
+{
+    int N,sum,half;
+    while(cin>>N && N>=0){
+        sum=0;
+        memset(dp,0,sizeof(dp));
+        dp[0]=true;
+        for(int i=0; i<N; i++){
+            cin>>val[i]>>num[i]; //input datas
+            sum+=val[i]*num[i];
+        }
+        half=sum/2;
+        for(int i=0; i<N; i++){ //all kinds of facilities
+            for(int j=1; j<=num[i]; j++){ //each kind's number
+                for(int k=half; k>=val[i]; k--){ //just like advance
+                    if(dp[k-val[i]])
+                        dp[k]=true;
+                }
+            }
+        }
+        for(int i=MAX; i>=0; i--){
+            if(dp[i]){
+                cout<<sum-i<<" "<<i<<endl;
+                break;
+            }
+        }
+    }
+
+    return 0;
+}

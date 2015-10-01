@@ -1,0 +1,95 @@
+//POJ - 2676-Sudoku
+#include "stdio.h"
+#include <iostream>
+#include <cstring>
+#include <cstdlib>
+#include <cmath>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+char sudo[9][10];
+char ans[9][10];
+bool ansfind;
+
+void readInput()
+{
+	for(int i=0; i<9; i++)
+	{
+		scanf("%s", sudo[i]);
+	}
+}
+
+bool check(int row, int col, char c)
+{
+	for(int i=0; i<9; i++){
+		if(c==sudo[row][i] || c==sudo[i][col])
+			return false;
+	}
+	int baseRow = row/3 * 3;
+	int baseCol = col/3 * 3;
+	for(int i=0; i<3; i++)
+	{
+		for(int j=0; j<3; j++)
+		{
+			if(c==sudo[baseRow+i][baseCol+j])
+				return false;
+		}
+	}
+	return true;
+}
+
+int solve(int cnt)
+{
+	if(ansfind)
+		return 0;
+		
+	if(cnt == -1)
+	{
+		ansfind = true;
+		memcpy(ans, sudo, sizeof(ans));
+		return 1;
+	}
+	
+	int row = cnt/9;
+	int col = cnt%9;
+	if(sudo[row][col] != '0')
+	{
+		solve(cnt-1);
+	}
+	else
+	{
+		for(int i=1; i<10; i++)
+		{
+			if(check(row, col, i+'0'))
+			{
+				sudo[row][col] = i+'0';
+				solve(cnt-1);
+				sudo[row][col] = '0';
+			}
+		}
+	}
+}
+
+void printSudo()
+{
+	for(int i=0; i<9; i++)
+	{
+		printf("%s\n", ans[i]);
+	}
+}
+
+int main()
+{
+	int t;
+	scanf("%d", &t);
+	
+	while(t--)
+	{
+		readInput();
+		ansfind = false;
+		solve(80);
+		printSudo();	
+	}
+	return 0;
+}

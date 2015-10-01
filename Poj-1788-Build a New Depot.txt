@@ -1,0 +1,71 @@
+//POJ - 1788 - Building a New Depot
+//每行每列有偶数个拐弯，从一点出发，转一圈总要回到该点
+#include "stdio.h"
+#include <iostream>
+#include <cstring>
+#include <cstdlib>
+#include <cmath>
+#include <algorithm> 
+#include <assert.h>  
+using namespace std;
+
+//max num of nodes
+const int MAX = 100005;
+
+struct node{
+	int x, y;
+};
+
+int cmpx(const void*a, const void*b)
+{
+	if(((node*)b)->x != ((node*)a)->x)
+		return ((node*)b)->x - ((node*)a)->x;
+	else
+		return ((node*)b)->y - ((node*)a)->y;
+}
+
+int cmpy(const void*a, const void*b)
+{
+	if(((node*)b)->y != ((node*)a)->y)
+		return ((node*)b)->y - ((node*)a)->y;
+	else
+		return ((node*)b)->x - ((node*)a)->x;
+}
+
+
+node posts[MAX];
+int n, p, ans;
+
+
+int main()
+{
+	int sum;
+	
+	while(scanf("%d", &n) && n)
+	{
+		sum=0;
+		for(int i=0; i<n; i++){
+			scanf("%d%d", &posts[i].x, &posts[i].y);
+		}
+		
+		//x
+		qsort(posts, n, sizeof(node), cmpx);
+		for(int i=0; i<n; i+=2){
+			sum += abs(posts[i].y - posts[i+1].y);
+		}
+		
+		//y
+		qsort(posts, n, sizeof(node), cmpy);
+		for(int i=0; i<n; i+=2){
+			sum += abs(posts[i].x - posts[i+1].x);
+		}
+		
+		printf("The length of the fence will be %d units.\n", sum);
+		
+		getchar();
+	}
+	return 0;    
+}     
+
+
+

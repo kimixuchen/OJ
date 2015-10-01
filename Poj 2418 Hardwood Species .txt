@@ -1,0 +1,33 @@
+//Poj-2418
+//C++ map µÄÓÃ·¨
+#include<cmath>
+#include<cstring>
+#include<stdio.h>
+#include<iostream>
+#include<algorithm>
+#include<cstdlib>
+#include<map>
+using namespace std;
+
+
+int main()
+{
+	cout.setf(ios::fixed);  
+    cout.precision(4);
+	map<string,int> species;
+	string s;
+	int totaltree=0;
+	while(getline(cin,s)){
+		++totaltree;
+		++species[s];
+	}
+	map<string,int>::iterator it = species.begin();  
+    while(it != species.end()) {  
+        double per = 100 * ((double)it->second / (double)totaltree);  
+        cout<<it->first;
+		cout<<per<<endl;
+        it++;  
+    }  
+return 0;
+}
+

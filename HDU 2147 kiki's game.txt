@@ -1,0 +1,18 @@
+#include<stdio.h>
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+
+int main()
+{
+    int m,n;
+    while(scanf("%d%d",&n,&m) && n && m){
+        if(m&1 && n&1)
+            printf("What a pity!\n"); //手动找规律
+        else
+            printf("Wonderful!\n");
+    }
+
+    return 0;
+}

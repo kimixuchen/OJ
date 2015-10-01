@@ -1,0 +1,22 @@
+//------poj2109
+#include <stdio.h>
+#include <string.h>
+#include <iostream>
+#include <cmath>
+#include <algorithm>
+
+using namespace std;
+
+
+int main(){
+
+    double n,k,p;
+    while(scanf("%lf%lf",&n,&p) != EOF){
+        printf("%0.f\n",exp(log(p)/n));	//注意  f  
+    }
+
+    return 0;
+}
+
+//float 的范围为-2^128 ~ +2^127，也即-3.40E+38 ~ +3.40E+38；
+//double 的范围为-2^1024 ~ +2^1023，也即-1.79E+308 ~ +1.79E+308

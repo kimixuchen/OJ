@@ -1,0 +1,117 @@
+/* 
+PKU:2528 Mayor's posters
+2015-07-20 16:17:00
+XuChen*/
+#include <cstdio>
+#include <iostream>
+#include <cstring>
+#include <cstdlib>
+#include <cmath>
+#include <vector>
+#include <algorithm>
+#include <queue>
+using namespace std;
+
+const int N = 11111;
+int cnt;
+int X[N<<2], col[N<<4];//pay attention 8 times
+bool hash[N];
+int li[N], ri[N];
+
+void pushDown(int rt)
+{
+	if(col[rt]!=-1)
+	{
+		col[rt<<1] = col[rt<<1|1] = col[rt];
+		col[rt] = -1;
+	}
+}
+void Update(int l, int r, int v, int b, int e, int rt)
+{
+	if(l<=b && r>=e)
+	{
+		col[rt] = v;
+		return;
+	}
+	pushDown(rt);
+	int m = (b+e)>>1;
+	if(l<=m)
+		Update(l, r, v, b, m, rt<<1);
+	if(r>m)
+		Update(l, r, v, m+1, e, rt<<1|1);
+}
+void Query(int l, int r, int rt)
+{
+	if(col[rt]!=-1)
+	{
+		if(!hash[col[rt]])
+			cnt++;
+		hash[col[rt]] = true;
+		return;
+	}
+	if(l==r)
+		return;
+	
+	int m = l + ((r-l)>>1);
+	Query(l, m, rt<<1);
+	Query(m+1, r, rt<<1|1);
+}
+int BSearch(int b, int e, int v)
+{
+	int m;
+	while(e>=b)
+	{
+		m = b + ((e-b)>>1);
+		if(X[m]==v)
+			return m;
+		if(v<X[m])
+			e = m-1;
+		else
+			b = m+1;
+	}
+	return -1;
+}
+
+int main() {  
+    int T , n, nn;  
+    scanf("%d",&T);  
+	while(T--)
+	{
+		scanf("%d", &n);
+		nn=0;
+		for(int i=0; i<n; i++)
+		{
+			 scanf("%d%d",&li[i] , &ri[i]);
+			 X[nn++] = li[i];
+			 X[nn++] = ri[i];
+		}
+		//remove dumplicate element and 
+		//push another element into  nosequence elements
+		sort(X, X+nn);
+		int m=1;
+		for(int i=1; i<nn; i++)
+		{
+			if(X[i]!=X[i-1])
+				X[m++] = X[i];		
+		}
+		for(int i=m-1; i>0; i--)
+		{
+			if(X[i]!=X[i-1]+1)
+				X[m++] = X[i-1]+1;
+		}
+		sort(X, X+m);
+		int l, r;
+		memset(col, -1, sizeof(col));
+		memset(hash, false, sizeof(hash));
+		for(int i=0; i<n; i++)
+		{
+			l = BSearch(0, m-1, li[i]);
+			r = BSearch(0, m-1, ri[i]);
+			Update(l, r, i, 0, m-1, 1);
+		}
+		cnt = 0;
+		Query(0, m-1, 1);
+		printf("%d\n",cnt);  
+	}
+    return 0;  
+}

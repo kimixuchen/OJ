@@ -1,0 +1,50 @@
+//POJ - 1003-Hangover
+#include "stdio.h"
+#include <iostream>
+#include <cstring>
+#include <cstdlib>
+#include <cmath>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+const int _MAX = 525;
+
+int mem[_MAX];
+
+void preProcess()
+{
+	double length = 0;
+	int index;
+	
+	for(int i=1; length < 5.21; i++)
+	{
+		length += 1.0/(i+1);
+		index = (int)(length*100);
+		if(0==mem[index])
+			mem[index] = i;
+	}
+	
+	int precount = mem[520];
+	for(int i=520; i>0; i--)
+	{
+		if(mem[i] == 0)
+			mem[i] = precount;
+		precount = mem[i];
+	}
+}
+
+int main()
+{
+	preProcess();
+	char length[10];
+	while(scanf("%s", length))
+	{
+		int len = (length[0]-'0')*100 + (length[2]-'0')*10 + (length[3]-'0');
+		if(0 == len)
+			break;
+			
+		printf("%d card(s)\n", mem[len]);
+	}
+	return 0;
+}

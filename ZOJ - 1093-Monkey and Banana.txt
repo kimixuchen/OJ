@@ -1,0 +1,85 @@
+//ZOJ - 1093-Monkey and Banana
+#include "stdio.h"
+#include <iostream>
+#include <cstring>
+#include <cstdlib>
+#include <cmath>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+const int N = 105;
+
+struct Block
+{
+	int width;
+	int length;
+	int height;
+	int area;
+};
+
+bool cmp(Block a, Block b)
+{
+	return a.area>b.area;
+}
+
+Block blocks[N];
+vector <int> dp(N);
+
+
+
+int main()
+{
+	int n, w, l, h, k, _max, c;
+	c=0;
+	
+	while(scanf("%d", &n)!=EOF && n!=0)
+	{
+		k=0;
+		c++;
+		for(int i=0; i<n; i++)
+		{
+			scanf("%d%d%d", &w, &l, &h);
+			blocks[k].width = w;	blocks[k].length = l;
+			blocks[k].height = h;	blocks[k++].area = w*l;
+			
+			blocks[k].width = h;	blocks[k].length = l;
+			blocks[k].height = w;	blocks[k++].area = h*l;
+			
+			blocks[k].width = w;	blocks[k].length = h;
+			blocks[k].height = l;	blocks[k++].area = w*h;
+		}
+		
+		sort(blocks, blocks+k, cmp);
+		
+		_max=dp[0]=blocks[0].height;
+		for(int i=1; i<k; i++)
+		{
+			dp[i]=blocks[i].height;
+			for(int j=0; j<i; j++)
+			{
+				if((blocks[i].width<blocks[j].width && blocks[i].length<blocks[j].length)
+					|| (blocks[i].width<blocks[j].length && blocks[i].length<blocks[j].width))
+				{
+					if(dp[j]+blocks[i].height > dp[i])
+						dp[i]=dp[j]+blocks[i].height;
+				}
+			}
+		}
+		
+		for(int i=0; i<k; i++)
+		{
+			if(dp[i]>_max)
+				_max=dp[i];
+		}
+		
+		printf("Case %d: maximum height = %d\n", c, _max);
+	}
+
+    return 0;  
+}  
+
+
+
+
+

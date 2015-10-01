@@ -1,0 +1,37 @@
+//------zoj3594
+#include <stdio.h>
+#include <string.h>
+#include <iostream>
+#include <cmath>
+#include <algorithm>
+using namespace std;
+
+string a[10],b[12];
+
+
+
+int main(){
+
+    int N;
+    int n;
+    a[0]="Jia";a[1]="Yi";a[2]="Bing";a[3]="Ding";
+    a[4]="Wu";a[5]="Ji";a[6]="Geng";a[7]="Xin";a[8]="Ren";a[9]="Gui";
+    b[0]="zi";b[1]="chou";b[2]="yin";b[3]="mao";b[4]="chen";b[5]="si";
+    b[6]="wu";b[7]="wei";b[8]="shen";b[9]="you";b[10]="xu";b[11]="hai";
+
+    scanf("%d",&N);
+    while(N--){
+        scanf("%d",&n);
+        int i,j;
+        if(n<0)
+            n++;        //负数要加一，因为没有0
+        n+=12000;
+        n-=1911;
+        n%=60;          //注意，60为一个循环，非120
+        i=(7+n)%10;
+        j=(11+n)%12;
+        cout<<a[i]<<b[j]<<endl;
+    }
+
+    return 0;
+}

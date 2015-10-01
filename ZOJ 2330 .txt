@@ -1,0 +1,46 @@
+//ZOJ 2330   A^B == B^A?
+#include "stdio.h"
+#include <iostream>
+#include <string>
+#include <cstdlib>
+#include <cmath>
+using namespace std;
+
+
+int main()
+{
+	const double E = exp(1.0f);
+	const double min = 1E-14;
+	double a;
+	while(scanf("%lf",&a) != EOF)
+	{
+		if(a > E){
+			printf("-1\n");
+			continue;
+		}
+		
+		double high = 45, low = E;
+		double mid;
+		double tmp;
+		while(high-low > min)
+		{
+			mid = (high+low)/2;
+			tmp = log(mid)/mid - log(a)/a;
+			
+			if(abs(tmp)<min){
+				printf("%0.5f\n",mid);
+				break;
+			}
+			
+			if(tmp > min){
+				low=mid;
+			}else{
+				high=mid;
+			}
+				
+				
+		}
+	}
+	
+    return 0;
+}

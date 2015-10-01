@@ -1,0 +1,43 @@
+//Hdu-2089
+#include<cmath>
+#include<cstring>
+#include<stdio.h>
+#include<iostream>
+#include<algorithm>
+#include<cstdlib>
+#include<map>
+using namespace std;
+const int N=1000001;
+bool f[N];
+
+bool isBad(int a)
+{
+	while(a){
+		if(a%10==4 || a%100==62)
+			return true;
+		a/=10;
+	}
+	return false;
+}
+
+int main()
+{
+	memset(f,0,sizeof(f));
+	
+	for(int i=1; i<N; i++){
+		if(isBad(i))
+			f[i]=true;
+	}
+	
+	int m,n;
+	while(scanf("%d%d",&m,&n)!=EOF && m+n){
+		int ans=0;
+		for(int i=m; i<=n; i++){
+			if(!f[i])
+				ans++;
+		}
+		printf("%d\n",ans);
+	}
+return 0;
+}
+

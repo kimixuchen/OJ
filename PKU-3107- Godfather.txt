@@ -1,0 +1,97 @@
+/* 
+PKU:1655 Balancing Act 
+2015-09-15 18:21:46
+XuChen*/
+
+#include <cstdio>
+#include <iostream>
+#include <cstring>
+#include <cstdlib>
+#include <cmath>
+#include <map>
+#include <vector>
+#include <algorithm>
+#include <queue>
+using namespace std;
+
+const int N = 50005;
+const int INF = 1111111111;
+
+struct Edge{
+	int v, next;
+};
+
+Edge edges[2*N];
+int heads[N];
+bool visit[N];
+int son[N];
+int nums[N];
+int num;
+int ansNode, ansNum, n, cases, cnt;
+
+
+void init()
+{
+	memset(visit, 0, sizeof(visit));
+	memset(heads, -1, sizeof(heads));
+	ansNode=0;
+	cnt=0;
+	ansNum = INF;
+}
+
+void addEdge(int u, int v)
+{
+	edges[cnt].v = v;
+	edges[cnt].next = heads[u];
+	heads[u] = cnt++;
+}
+
+void dfs(int cur)
+{
+	visit[cur] = true;
+	son[cur] = 0;
+	int u;
+	int tmp=0;
+	for(int i=heads[cur]; i!=-1; i = edges[i].next)
+	{
+		u = edges[i].v;
+		if(!visit[u])
+		{
+			dfs(u);
+			son[cur]+=(son[u]+1);
+			tmp = max(tmp, son[u]+1);
+		}
+	}
+	tmp = max(tmp, n-son[cur]-1);
+	if(tmp<ansNum)
+	{
+		num=0;
+		nums[0] = cur;
+		ansNum = tmp;
+	}
+	else if(tmp == ansNum)
+	{
+		num++;
+		nums[num] = cur;
+	}
+}
+
+int main() {
+		init();
+		int u, v;
+		scanf("%d", &n);
+		for(int i=0; i<n-1; i++)
+		{
+			scanf("%d %d", &u, &v);
+			addEdge(u, v);
+			addEdge(v, u);
+		}
+		dfs(1);
+		sort(nums, nums+num+1);
+		for(int i=0; i<num; i++)
+		{
+			printf("%d ", nums[i]);
+		}
+		printf("%d\n", nums[num]);
+    return 0;  
+}

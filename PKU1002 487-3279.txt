@@ -1,0 +1,72 @@
+/* 
+PKU:1002 487-3279
+2015-09-14 20:05:10
+XuChen*/
+//用G++会超时，C++可以过
+#include <cstdio>
+#include <iostream>
+#include <cstring>
+#include <cstdlib>
+#include <cmath>
+#include <map>
+#include <vector>
+#include <algorithm>
+#include <queue>
+using namespace std;
+
+const int N = 100005;
+int nums[N];
+int n;
+map<int, int> mp;
+map<int, int>::iterator start, end;
+	
+int numbers[] =   
+{  
+    2, 2, 2,  
+    3, 3, 3,  
+    4, 4, 4,  
+    5, 5, 5,  
+    6, 6, 6,  
+    7, 0, 7, 7,  
+    8, 8, 8,  
+    9, 9, 9  
+};  
+
+int cmp(const void* a,const void* b)  
+{  
+    return *(int*)a-*(int*)b;  
+}  
+
+int main() {
+    scanf("%d", &n);
+	char s[50];
+	int tel;
+	for(int i=0; i<n; i++)
+	{
+		cin>>s;
+		tel=0;
+		for(int j=0; s[j]!='\0'; j++)
+		{
+			if(isdigit(s[j]))  
+                tel = tel * 10 + s[j] - '0';  
+            else if(isalpha(s[j]))  
+                tel = tel * 10 + numbers[ s[j] - 'A' ]; 
+		}
+		mp[tel]++;
+	}	
+	bool isfind=false;
+	for(start=mp.begin(), end=mp.end(); start!=end; start++)
+	{
+		if(start->second!=1)
+		{
+			int num = start->first;
+			printf("%03d-%04d %d\n", num/10000, num%10000, start->second);
+			isfind=true;
+		}
+	}
+
+	if(!isfind)
+		printf("No duplicates.\n");
+
+    return 0;  
+}

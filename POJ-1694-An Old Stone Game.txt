@@ -1,0 +1,72 @@
+//POJ - 1694 - An Old Stone Game
+#include "stdio.h"
+#include <iostream>
+#include <cstring>
+#include <cstdlib>
+#include <cmath>
+#include <algorithm> 
+#include <assert.h>  
+using namespace std;
+
+//max num of nodes
+const int MAX = 205;
+
+struct node{
+	int num;
+	int childnum;
+	int childs[MAX];
+};
+
+int cmp(const void*a, const void*b)
+{
+	return *(int*)b - *(int*)a;
+}
+
+node trees[MAX];
+int m, n, p, k;
+
+int getmin(node &snode){
+
+	if(snode.childnum == 0)
+		return 1;
+	int tchildk[MAX];
+	int tchildnum = snode.childnum;
+	for(int i=1; i<=tchildnum; i++){
+		tchildk[i] = getmin(trees[snode.childs[i]]);
+	}
+	qsort(tchildk+1, tchildnum, sizeof(int), cmp);
+	
+	int ans = tchildk[1];
+	for(int i=2; i<=tchildnum; i++){
+		if(ans-i+1 < tchildk[i])
+			ans += tchildk[i]-(ans-i+1);
+	}
+	
+	return ans;
+}
+int main()
+{
+	
+	scanf("%d", &m);
+	while(m--)
+	{
+		k = MAX;
+		scanf("%d", &n);
+		int r;
+		for(int i=0; i<n; i++){
+			scanf("%d%d", &p, &r);
+			trees[p].childnum = r;
+			for(int j=1; j<=r; j++){
+				scanf("%d", &trees[p].childs[j]);
+			}
+		}
+		
+		k = getmin(trees[1]);
+		
+		printf("%d\n", k);
+	}
+	return 0;    
+}     
+
+
+

@@ -1,0 +1,39 @@
+//POJ - 1163 - The Triangle
+#include "stdio.h"
+#include <iostream>
+#include <cstring>
+#include <cstdlib>
+#include <cmath>
+#include <algorithm> 
+#include <assert.h>  
+using namespace std;
+
+const int MAX = 105;
+int rows, sum;
+int dp[MAX][MAX];
+int maxs[MAX];
+
+int main()
+{
+	scanf("%d", &rows);
+	for(int i=0; i<rows; i++){
+		for(int j=0; j<=i; j++){
+			scanf("%d", &dp[i][j]);
+		}
+	}
+	
+	int sum1, sum2;
+	for(int i=rows-1; i>=0; i--){
+		for(int j=0; j<=i; j++){
+			sum1 = dp[i][j] + maxs[j];
+			sum2 = dp[i][j] + maxs[j+1];
+			maxs[j] = max(sum1, sum2);
+		}
+	}
+	
+	printf("%d\n", maxs[0]);
+	return 0;    
+}     
+
+
+

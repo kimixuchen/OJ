@@ -1,0 +1,40 @@
+//Pku-2509 - Peter's smokes
+#include<cmath>
+#include<cstring>
+#include<stdio.h>
+#include<iostream>
+#include<algorithm>
+#include<cstdlib>
+#include<map>
+using namespace std;
+
+int ans=0;
+
+void solve(int n, int t, int k)
+{
+	if(n+t<k){
+		ans+=n;
+	}
+	else{
+		ans+=n;
+		t+=n;
+		n=t/k;
+		t-=n*k;
+		solve(n,t,k);
+	}
+	return;
+}
+
+int main()
+{
+	int n,k;
+	while(cin>>n>>k){
+		ans=0;
+		solve(n,0,k);
+		cout<<ans<<endl;
+	}
+
+
+return 0;
+}
+

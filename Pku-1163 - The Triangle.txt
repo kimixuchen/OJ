@@ -1,0 +1,48 @@
+//Pku-1163 - The Triangle
+#include<cmath>
+#include<cstring>
+#include<stdio.h>
+#include<iostream>
+#include<algorithm>
+#include<cstdlib>
+#include<map>
+using namespace std;
+
+//*******行数
+int N;
+//储存数据
+int a[2560];
+
+int main()
+{
+	scanf("%d",&N);
+	int sum = N*(N+1)/2;
+	for(int i=1; i<=sum; i++){
+		scanf("%d",&a[i]);
+	}
+	
+	//*******初始化最大值为第一个数
+	int MAX = a[1];
+	for(int j=2; j<=N; j++)
+	{
+		int k1 = j*(j-1)/2 + 1;
+		a[k1] += a[k1-j+1];
+		for(int k2=k1+1; k2<k1+j-1; k2++){
+			a[k2] += max(a[k2-j],a[k2-j+1]);
+		}
+		a[k1+j-1] += a[k1-1];
+	
+	}
+	
+	for(int i=sum-N+1; i<=sum; i++){
+		if(MAX<a[i])
+			MAX = a[i];
+	}
+	
+	printf("%d\n", MAX);
+
+
+
+return 0;
+}
+

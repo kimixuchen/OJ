@@ -1,0 +1,71 @@
+
+/*---------------poj 1029-----------------------*/
+#include <stdio.h>
+#include <string.h>
+#include <iostream>
+#include <cmath>
+#include <algorithm>
+using namespace std;
+
+const int MAX = 1001;
+
+    int N,K,p,ans;
+
+    char sign;
+    //记录读入的数据
+    int c[MAX];
+    //记录硬币真假
+    int w[MAX];
+    //记录肯定为真的硬币
+    int r[MAX];
+int main(){
+    int count=0;
+
+    scanf("%d%d",&N,&K);
+
+    while(K--){
+        scanf("%d",&p);
+
+        for(int i=0; i<p<<1; i++)
+            scanf("%d",&c[i]);
+
+        scanf("%s",&sign);
+        //肯定为真币
+        if(sign == '='){
+            for(int i=0; i<p<<1; i++)
+                r[c[i]]=1;
+        }
+        //出现假币
+        if(sign == '<'){
+            count++;
+            for(int i=0; i<p; i++)
+                w[c[i]]--;
+            for(int j=p; j<p<<1; j++)
+                w[c[j]]++;
+        }
+        if(sign == '>'){
+            count++;
+            for(int i=0; i<p; i++)
+                w[c[i]]++;
+            for(int j=p; j<p<<1; j++)
+                w[c[j]]--;
+        }
+
+    }
+
+    int cc=0, pos;
+    for(int i=1; i<=N; i++){
+        if(r[i])
+            continue;
+        if(w[i]==count || w[i] == -count){
+            ++cc;
+            pos=i;
+        }
+
+    }
+    if(cc==1)
+        printf("%d\n",pos);
+    else
+        printf("0\n");
+    return 0;
+}

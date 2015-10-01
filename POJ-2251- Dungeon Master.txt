@@ -1,0 +1,114 @@
+/* 
+POJ:2251 Dungeon Master
+2015-07-14 18:21:50
+XuChen*/
+#include <cstdio>
+#include <iostream>
+#include <cstring>
+#include <cstdlib>
+#include <cmath>
+#include <vector>
+#include <algorithm>
+#include <queue>
+using namespace std;
+
+const int N = 32;
+bool map[N][N][N];
+bool vis[N][N][N];
+
+struct Node  
+{  
+    int x,y,z;
+};  
+
+int BFS(Node S, Node E)
+{
+	Node shift[6] = {{1,0,0}, {0,1,0}, {0,0,1}, {-1,0,0}, {0,-1,0}, {0,0,-1}};
+	int steps = 0;
+	bool isfind = false;
+	Node tmpNode, curNode;
+	queue<Node> q1, q2;
+	q2.push(S);
+	
+	while(!q2.empty())
+	{
+		steps++;
+		while(!q2.empty())
+		{
+			curNode = q2.front();
+			q2.pop();
+			if(curNode.x == E.x && curNode.y == E.y && curNode.z == E.z)
+			{
+				isfind = true;
+				break;
+			}
+			q1.push(curNode);
+		}
+		
+		if(isfind)
+			break;
+		while(!q1.empty())
+		{
+			curNode = q1.front();
+			q1.pop();
+			for(int i=0; i<6; i++)
+			{
+				tmpNode.x = curNode.x+shift[i].x;
+				tmpNode.y = curNode.y+shift[i].y;
+				tmpNode.z = curNode.z+shift[i].z;
+				if(true == map[tmpNode.x][tmpNode.y][tmpNode.z] && 
+					false == vis[tmpNode.x][tmpNode.y][tmpNode.z])
+				{
+					q2.push((Node){tmpNode.x, tmpNode.y, 
+						tmpNode.z});
+					vis[tmpNode.x][tmpNode.y][tmpNode.z] = true;
+				}
+			}
+		}
+		
+	}
+	
+	return --steps;
+}
+
+int main()
+{
+	int Level, R, C;
+	char s[N];
+	Node S, E;
+	while(scanf("%d%d%d", &Level, &R, &C) != EOF)
+	{
+		if(Level==0 && R==0 && C==0)
+			break;
+		memset(map, false, sizeof(map));
+		memset(vis, false, sizeof(vis));
+		
+		for(int l=1; l<=Level; l++)
+		{
+			for(int r=1; r<=R; r++)
+			{
+				scanf("%s", s);
+				for(int c=1; c<=C; c++)
+				{
+					if(s[c-1] == '.')
+						map[l][r][c] = true;
+					else if(s[c-1] == '#')
+						map[l][r][c] = false;
+					else if(s[c-1] == 'S')
+						S = (Node){l, r, c};
+					else if(s[c-1] == 'E')
+						E = (Node){l, r, c};
+				}
+			}
+		}
+		vis[S.x][S.y][S.z] = true;
+		map[E.x][E.y][E.z] = true;
+		int steps = BFS(S, E);
+		
+		if(0 == steps)
+			printf("Trapped!\n");
+		else
+			printf("Escaped in %d minute(s).\n", steps);
+	}
+	return 0;
+}

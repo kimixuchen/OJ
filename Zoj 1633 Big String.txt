@@ -1,0 +1,27 @@
+//Zju:1633
+//T.T^__^
+//ì³²¨ÄÇÆõÊýÁÐ
+#include "iostream"
+using namespace std;
+typedef unsigned long long int64;
+#define len 88
+int64 a[len];
+
+int main(){
+	string base = "T.T^__^";
+	int64 n;
+	while(cin>>n){
+		a[0] = 7;
+		a[1] = 10;
+		for(int i = 2; i < len; i++)
+			a[i] = a[i - 1] + a[i - 2];
+		while(n > 7){
+			int i = 0;
+			while(i < len && a[i] < n)
+				i++;
+			n -= a[i - 1];
+		}
+		cout<<base[n - 1]<<endl;
+	}
+	return 0;
+}

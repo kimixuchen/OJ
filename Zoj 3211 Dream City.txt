@@ -1,0 +1,56 @@
+//ZOJ - 3211-Dream Sity
+#include "stdio.h"
+#include <iostream>
+#include <cstring>
+#include <cstdlib>
+#include <cmath>
+#include <algorithm>  
+
+#define max(a, b) (a > b ? a : b) 
+
+using namespace std;
+
+struct node{
+	int a, b;
+	bool operator < (const node &x) const{
+		return b<x.b;
+	}
+};
+
+int main(){ 
+	const int MAX = 255;
+	int T,m,n;
+	node tree[MAX];
+	int dp[MAX][MAX];
+	
+	scanf("%d", &T);
+	while(T--)
+	{
+		scanf("%d%d", &n, &m);
+		
+		for(int i=1; i<=n; i++)
+			scanf("%d", &tree[i].a);
+		for(int i=1; i<=n; i++)
+			scanf("%d", &tree[i].b);
+			
+		sort(tree+1, tree+n+1);
+		memset(dp, 0, sizeof(dp));
+		
+		for(int i=1; i<=n; i++){
+			for(int j=1; j<=m; j++){
+				int cur = dp[i-1][j-1] + tree[i].a + tree[i].b*(j-1);
+				dp[i][j] = max(dp[i-1][j], cur);
+			}
+		}
+		
+		printf("%d\n", dp[n][m]);
+	}
+
+	
+    return 0;  
+}  
+
+
+
+
+

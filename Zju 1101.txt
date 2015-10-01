@@ -1,0 +1,50 @@
+#include<stdio.h>
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+int main()
+{
+  int D[1010];
+  int i,j,k,m,n;
+  while(scanf("%d",&n),n)
+    {
+      for(i=0;i<n;++i)
+        scanf("%d",&D[i]);
+      sort(D,D+n);
+      bool T=false;
+      int q,p,tmp1,tmp2;
+      for(i=n-1;i>=0;--i)
+        {
+          for(j=n-1;j>=0;--j)
+            {
+              if(j==i) continue;
+              tmp1=D[i]-D[j];
+              p=0;q=n-1;
+              tmp2=D[p]+D[q];
+              while(p<q)
+                {
+                  if(tmp2>tmp1)
+                    --q;
+                  else if(tmp2<tmp1)
+                    ++p;
+                  else
+                    {
+                      if(p==i||p==j) ++p;
+                      else if(q==i||q==j) --q;
+                      else
+                        {
+                          printf("%d\n",D[i]);
+                          T=true;
+                          goto out;
+                        }
+                    }
+                  tmp2=D[p]+D[q];
+                }
+            }
+        }
+out:
+      if(T==false) printf("no solution\n");
+    }
+  return 0;
+}

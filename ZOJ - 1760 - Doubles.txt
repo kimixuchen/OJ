@@ -1,0 +1,46 @@
+//ZOJ - 1760 - Doubles
+#include "stdio.h"
+#include <iostream>
+#include <cstring>
+#include <cstdlib>
+#include <cmath>
+#include <algorithm>  
+using namespace std;
+
+const int MAX  = 205;
+
+int main(){ 
+	int a, n;
+	int ans;
+	bool dp[MAX];
+	int list[20];
+	do{
+		memset(dp, 0, sizeof(dp));
+		n=0;
+		ans = 0;
+		while(scanf("%d", &a) && a!= 0)
+		{
+			if(-1 == a)
+				break;
+			
+			dp[a] = 1;
+			list[n++] = a;
+		}
+		
+		if(-1 == a)
+			break;
+		
+		for(int i=0; i<n; i++){
+			ans+=dp[2*list[i]];
+		}
+		printf("%d\n", ans);
+		
+	}while(1);
+	
+    return 0;  
+}  
+
+
+
+
+

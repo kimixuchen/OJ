@@ -1,0 +1,186 @@
+//Pku-1011 - stick 
+#include<cmath>
+#include<cstring>
+#include<stdio.h>
+#include<iostream>
+#include<algorithm>
+#include<cstdlib>
+#include<map>
+using namespace std;
+int a[64];
+bool used[64];
+bool ok;
+int num_stick;
+int len;
+int n;
+
+int cmp(int a, int b){
+	return a>b;
+}
+
+void solve(int k,int sum, int m)
+{
+	if(m>num_stick){
+		ok=1;
+		return;
+	}
+	
+	if(sum==len){
+		solve(0,0,m+1);
+	}
+	else
+	{
+		int old=-1;
+		for(int i=k; i<n; i++)
+		{
+			if(used[i]==0)
+			{
+				if(a[i]==old)
+					continue;
+					
+				if(sum==0)
+				{
+					old=a[i];
+					used[i]=1;
+					solve(i+1,sum+a[i],m);
+					used[i]=0;
+					return;
+				}
+				if(sum+a[i]<=len)
+				{
+					old=a[i];
+					used[i]=1;
+					solve(i+1,sum+a[i],m);
+					used[i]=0;
+					if(ok)
+						return;
+				}
+			}
+				
+			
+			
+		}
+	
+	}
+	
+	
+}
+
+int main()
+{
+	while(scanf("%d",&n)!=EOF && n)
+	{
+		int total=0;
+		for(int i=0; i<n; i++){
+			scanf("%d",&a[i]);
+			total+=a[i];
+		}
+		sort(a,a+n,cmp);//降序排列
+		
+		for(len=a[0]; len<=total; len++)
+		{
+			if(total%len==0)
+			{
+				memset(used,0,sizeof(used));
+				ok=0;
+				num_stick=total/len;
+				solve(0,0,1);
+				if(ok){
+					printf("%d\n",len);
+					break;
+				}
+			}
+		}
+	}
+
+return 0;
+}
+//大神代码
+#include"iostream"
+#include <algorithm>
+using namespace std;
+const int N = 64;
+int a[N]; //小木棍长度
+int n; //小木棍数目
+int len; //凑成木棍的长度
+int num_stick; //凑成木棍的数目
+int used[N]; //小木棍是否被使用
+int ok; //是否成功
+ 
+int cmp(int a,int b)
+{
+  return a>b;
+}
+//k 从第k个小棍开始搜
+//sum 积累的棍子长度
+//cnt 搜第cnt根棍子
+void solve(int k,int sum,int cnt)
+{
+  if(cnt > num_stick)
+  {
+    ok = 1;
+    return;
+  }
+  if(sum == len)
+  {
+    solve(0,0,cnt+1);
+  }
+  else
+  {
+    int old = -1; //前一次的选择
+    for(int i = k;i<n;i++)
+    if(used[i] == 0)
+    {
+      //剪枝：和上一次的一样，不必尝试！
+      if(a[i] == old)
+        continue;
+      //剪枝：第一次选，肯定选最长的！
+      if(sum == 0)
+      {
+         used[i] = 1;
+         old = a[i];
+         solve(i+1,sum+a[i],cnt);
+         used[i] = 0;
+         return;
+      }
+      if(a[i]+sum<=len)
+      {
+         used[i] = 1;
+         old = a[i];
+         solve(i+1,sum+a[i],cnt);
+         used[i] = 0;
+         if(ok)
+            return;
+      }
+    }
+  }
+ 
+}
+int main()
+{
+   while(scanf("%d",&n) && n!=0)
+   {
+      int i;
+      int total = 0;
+      for(i = 0;i<n;i++)
+      {
+         scanf("%d",&a[i]);
+         total += a[i];
+      }
+      sort(a,a+n,cmp);
+      for(i = a[0];i<=total;i++)
+       if(total%i == 0)
+      {
+        len = i;
+        num_stick = total/i;
+        memset(used,0,N*sizeof(int));
+        ok = 0;
+        solve(0,0,1);
+        if(ok)
+        {
+          printf("%d\n",i);
+          break;
+        }
+      }
+   } 
+}

@@ -1,0 +1,82 @@
+//ZOJ - 1657 - Goldbach's Conjecture
+#include "stdio.h"
+#include <iostream>
+#include <cstring>
+#include <cstdlib>
+#include <cmath>
+#include <algorithm> 
+#include <assert.h>  
+using namespace std;
+
+const int MAX  = 40000;
+
+int prim[5000];
+
+bool isprim(int num){
+	int m = (int)sqrt(num) + 1;
+	for(int i=2; i<m; i++){
+		if(num%i == 0)
+			return false;
+	}
+	return true;
+}
+
+int main()    
+{    
+	int pnum = 0;
+	for(int i=2; i<MAX; i++){
+		if(isprim(i))
+			prim[pnum++] = i;
+	}
+
+	int num;
+	while(scanf("%d", &num) != EOF && num!=0)
+	{
+		int pos1, pos2;
+		int mid = num/2;
+		int ans = 0;
+		//find closest pos
+		for(int i=0; i<pnum-1; i++){
+		
+			if(prim[i] == mid){
+				pos1 = i;
+				pos2 = i;
+				break;
+			}
+			else if(prim[i] < mid && prim[i+1] > mid){
+				if(prim[i+1] > mid){
+					pos1 = i;
+					pos2 = i+1;
+					break;
+				}
+				else if(prim[i+1] == mid){
+					pos1 = i;
+					pos2 = i+1;
+					break;
+				}
+			}
+				
+		}
+		
+
+		
+		while(pos1 >=0 && pos2 < pnum && prim[pnum] < num)
+		{
+			if(prim[pos1] + prim[pos2] > num)
+				pos1--;
+			else if(prim[pos1] + prim[pos2] < num)
+				pos2++;
+			else{
+				ans++;
+				pos1--;
+			}
+		}
+		
+		printf("%d\n", ans);
+	}
+
+	return 0;    
+}     
+
+
+

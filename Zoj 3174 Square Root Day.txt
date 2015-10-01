@@ -1,0 +1,34 @@
+//ZOJ-3174-Square Root Day
+#include "stdio.h"
+#include <iostream>
+#include <cstring>
+#include <cstdlib>
+#include <cmath>
+#include <algorithm>  
+using namespace std;
+
+const double MIN = 1e-6;
+int main(){ 
+	int t, x, y;
+	int ans;
+	scanf("%d", &t);
+	while(t--)
+	{
+		ans = 0;
+		scanf("%d%d", &x, &y);
+		for(int i=x; i<=y; i++){
+			int a = i%100;
+			int b = i%1000;
+			if((abs((int)sqrt(a)*(int)sqrt(a)-a) < MIN && a<169 && a>0) ||
+				(abs((int)sqrt(b)*(int)sqrt(b)-b) < MIN && b<169 && b>0))
+				ans++;
+		}
+		printf("%d\n", ans);
+	}
+    return 0;  
+}  
+
+
+
+
+

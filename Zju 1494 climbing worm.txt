@@ -1,0 +1,17 @@
+#include<stdio.h>
+#include<cstring>
+#include<iostream>
+using namespace std;
+
+
+
+int main(){
+    int n,u,d;
+    while(cin>>n>>u>>d && n && u && d){
+        if((n-u)%(u-d)==0)
+            cout<<(n-u)/(u-d)*2+1<<endl;
+        else
+            cout<<(n-u)/(u-d)*2+3<<endl;
+    }
+    return 0;
+}

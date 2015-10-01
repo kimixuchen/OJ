@@ -1,0 +1,69 @@
+//ZOJ - 1025 - Wooden Sticks
+#include "stdio.h"
+#include <iostream>
+#include <cstring>
+#include <cstdlib>
+#include <cmath>
+#include <algorithm> 
+#include <assert.h>  
+using namespace std;
+
+int b[5005];
+
+struct node{
+	int l;
+	int w;
+};
+
+int cmp(const void* a, const void* b){
+	if(((node*)a)->l != ((node*)b)->l)
+		return ((node*)a)->l > ((node*)b)->l ? 1:-1;
+	else
+		return ((node*)a)->w > ((node*)b)->w ? 1:-1;
+}
+
+int LIS(int n, node* woods){
+	memset(b, 0, sizeof(b));
+	b[0] = 1;
+	
+	for(int i=0; i<n; i++){
+		b[i] = 1;
+		for(int j=0; j<i; j++){
+			if(woods[j].w > woods[i].w && b[j]+1>b[i]){
+				b[i] = b[j]+1;
+			}
+		}
+	}
+	
+	int max = 0;
+	for(int i=0; i<n; i++){
+		if(b[i] > max)
+			max = b[i];
+	}
+	
+	return max;
+}
+
+int main()
+{
+	int T,n,l,w;
+	node woods[5005];
+	
+	scanf("%d", &T);
+	while(T--)
+	{
+		scanf("%d", &n);
+		for(int i=0; i<n; i++){
+			scanf("%d%d", &woods[i].l, &woods[i].w);
+		}
+		
+		qsort(woods, n, sizeof(node), cmp);
+
+		printf("%d\n", LIS(n, woods));
+	}
+	
+	return 0;    
+}     
+
+
+

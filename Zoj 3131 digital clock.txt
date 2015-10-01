@@ -1,0 +1,60 @@
+//ZOJ-3131 Digital Clock
+#include "stdio.h"
+#include <iostream>
+#include <string>
+#include <cstdlib>
+using namespace std;
+
+//get intenger from form xx:xx:xx
+int getxx(char x, char y)
+{
+	return (x-48)*10 + y - 48;
+}
+
+int main()
+{
+	const int TOTALNUM = 86400;
+	int dp[TOTALNUM + 5];
+	int n=0;
+	dp[n] = 1;
+	//initialize dp
+	for(int i = 0; i<=23; i++){
+		for(int j = 0; j<=59; j++){
+			for(int k = 0; k<=59; k++){
+				n++;
+				if((i*10000 + j*100 + k)%3 == 0){
+					dp[n] = dp[n-1] + 1;
+				}else{
+					dp[n] = dp[n-1];
+				}
+			}
+		}
+	}
+	
+	int N;
+	int h1,m1,s1,h2,m2,s2;
+	char a[9], b[9];
+	int timenum1, timenum2;
+	int answer;
+	
+	scanf("%d",&N);
+	while(N--){
+		getchar();
+		scanf("%s%s",a ,b);
+		timenum1 = getxx(a[0],a[1])*3600 + getxx(a[3],a[4])*60 + getxx(a[6],a[7]);
+		timenum2 = getxx(b[0],b[1])*3600 + getxx(b[3],b[4])*60 + getxx(b[6],b[7]);;
+		answer = dp[timenum2+1] - dp[timenum1+1];
+		//modify the ansewer
+
+		if(answer < 0){
+			answer += dp[TOTALNUM];
+			answer--;
+		}
+		if(dp[timenum1+1] > dp[timenum1])
+			answer ++;
+
+		printf("%d\n", answer);
+	}
+	
+    return 0;
+}

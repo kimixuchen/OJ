@@ -1,0 +1,57 @@
+//Pku-1458
+#include<cmath>
+#include<cstring>
+#include<stdio.h>
+#include<iostream>
+#include<algorithm>
+#include<cstdlib>
+
+const int MAX = 256;
+using namespace std;
+
+
+void  doit(char a1[],char a2[])
+{
+	int dp[MAX][MAX];
+	int n1 = strlen(a1);
+	int n2 = strlen(a2);
+	for(int i=0; i<MAX; i++)
+		dp[i][0]=0;	
+	for(int j=0; j<MAX; j++)	
+		dp[0][j]=0;
+	
+	for(int i=0; i<n1; i++){
+		for(int j=0; j<n2; j++){
+			if(a1[i]==a2[j]){
+				dp[i+1][j+1] = dp[i][j]+1;
+				
+			}
+			else
+				dp[i+1][j+1] = max(dp[i][j+1],dp[i+1][j]);
+		
+		}
+	
+	}
+
+	printf("%d\n",dp[n1][n2]);
+	
+	
+}
+
+int main()
+{
+	char a1[MAX];
+	char a2[MAX];
+	//int k,m,n;
+	//scanf("%d",&k);
+	while(scanf("%s%s",a1,a2)!=EOF)
+	{
+	
+		doit(a1,a2);
+	}
+	
+		
+
+return 0;
+}
+

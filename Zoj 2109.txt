@@ -1,0 +1,62 @@
+//ZOJ - 2109-FatMouse' Trade
+#include "stdio.h"
+#include <iostream>
+#include <cstring>
+#include <cstdlib>
+#include <cmath>
+using namespace std;
+
+const int MAX = 1000;
+
+struct JF{
+	int j_bean;
+	int c_food;
+	double rate;
+};
+
+int main(){ 
+	
+	int m,n;
+	JF jflist[MAX];
+	JF tmp;
+	int index;
+	double answer;
+	
+	while(scanf("%d%d", &m, &n) && m!=-1 && n!=-1)
+	{
+		index = m;
+		answer = 0;
+		
+		for(int i=0; i<n; i++){
+			scanf("%d%d", &jflist[i].j_bean, &jflist[i].c_food);
+			jflist[i].rate = (double)jflist[i].j_bean/jflist[i].c_food;
+		}
+		
+		for(int i=0; i<n; i++){
+			for(int j=i; j<n; j++){
+				if(jflist[i].rate < jflist[j].rate){
+					tmp = jflist[i];
+					jflist[i] = jflist[j];
+					jflist[j] = tmp;
+				}
+			}
+		}
+		
+		for(int i=0; i<n && index>0; i++){
+			if(index >= jflist[i].c_food)
+				answer += jflist[i].j_bean;
+			else
+				answer += index*jflist[i].rate;
+			
+			index -= jflist[i].c_food;
+		}
+		
+		printf("%0.3f\n", answer);
+	}
+    return 0;  
+}  
+
+
+
+
+
