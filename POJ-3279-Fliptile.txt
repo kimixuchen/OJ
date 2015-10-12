@@ -1,0 +1,110 @@
+/**
+ *POj-3279-Fliptile
+ *xuchen
+ *2015-10-12
+**/
+#include "stdio.h"
+#include <cmath>
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+const int M = 20;
+const int N = 20;
+const int INF = 111111111;
+int map[M][N], flip[M][N], ans[M][N];
+int ansNum;
+int m, n;
+int dir[5][2] = {{-1,0},{1,0}, {0,-1},{0,1},{0,0}};
+
+bool isIn(int x, int y)
+{
+	return (x>=0 && x<m && y>=0 && y<n);
+}
+
+int judge(int x, int y)
+{
+	int ret = map[x][y];
+	int xx, yy;
+	for(int i=0; i<5; i++)
+	{
+		xx = x+dir[i][0];
+		yy = y+dir[i][1];
+		if(isIn(xx,yy))
+			ret += flip[xx][yy];
+	}
+	ret%=2;
+	return ret;
+}
+
+int cal()
+{
+	int ans=0;
+	for(int i=1; i<m; i++)
+	{
+		for(int j=0; j<n; j++)
+		{
+			if(judge(i-1, j)==1)
+				flip[i][j] = 1;
+		}
+	}
+
+	for(int j=0; j<n; j++)
+	{
+		if(judge(m-1, j)==1)
+		{
+			ans = INF;
+			return ans;
+		}
+
+	}
+
+	for(int i=0; i<m; i++)
+	{
+		for(int j=0; j<n; j++)
+		{
+			ans += flip[i][j];
+		}
+	}
+	return ans;
+}
+
+int main()
+{
+	while(scanf("%d%d", &m, &n)!=EOF)
+	{
+		ansNum = INF;
+		for(int i=0; i<m; i++)
+			for(int j=0; j<n; j++)
+				scanf("%d", &map[i][j]);
+
+		for(int i=0; i< 1<<n; i++)
+		{
+			memset(flip, 0, sizeof(flip));
+			for(int j=0; j<n; j++)
+				flip[0][j] = i>>(n-j-1)&1;
+			
+			int tmp = cal();
+			if(tmp<ansNum)
+			{
+				ansNum = tmp;
+				for(int i=0; i<m; i++)
+					for(int j=0; j<n; j++)
+						ans[i][j] = flip[i][j];
+			}
+		}
+		if(INF == ansNum)
+			printf("IMPOSSIBLE\n");
+		else
+		{
+			for(int i=0; i<m; i++)
+			{
+				for(int j=0; j<n; j++)
+				{
+					printf("%d%c", ans[i][j], j==n-1 ? '\n':' ');
+				}
+			}
+		}
+	}
+	return 0;
+}
