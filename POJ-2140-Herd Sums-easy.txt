@@ -1,0 +1,35 @@
+/**
+POJ-2140-Herd Sums
+2015-10-16 15:55:37
+xuchen
+**/
+/**
+ *Case1:
+ *If the length of sequence is odd, we suppose it (2d-1), the avegrage x
+ *then we have (2d-1)x = n
+ *Case2:
+ *If the length of sequence is even, we suppose the middle two numbers' sum is(2b-1)
+ *and the pair of number is y(suppose x and x-1, x+1 and x-2 is a pair)
+ *then we have (2b-1)y = n
+ *After all, the answer is converted to "how many odd factor does n have?" 
+**/
+#include "stdio.h"
+#include <cmath>
+#include <algorithm>
+#include <queue>
+using namespace std;
+
+
+int main()
+{
+	int n, ans, m;
+	scanf("%d", &n);
+	ans = 0;
+	for(int i=1; i<=n; i+=2)
+	{
+		if(n%i==0)
+			ans++;
+	}
+	printf("%d\n", ans);
+	return 0;
+}

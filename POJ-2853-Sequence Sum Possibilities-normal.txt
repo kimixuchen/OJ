@@ -1,0 +1,40 @@
+/**
+POJ-2853-Sequence Sum Possibilities
+2015-10-16 16:35:32
+xuchen
+**/
+/**
+ * (x+1)+(x+2)+(x+3)...(x+i)=n, x=0,1,2.., i>=2
+ * A=x*i=n-S(i)
+ * A%i must be 0
+**/
+#include "stdio.h"
+#include <cmath>
+#include <algorithm>
+#include <queue>
+using namespace std;
+
+int S(int i)
+{
+	return i*(i+1)/2;
+}
+
+int main()
+{
+	int t, n, ans, id;
+	scanf("%d", &t);
+	while(t--)
+	{
+		ans = 0;
+		scanf("%d%d", &id, &n);
+		for(int i=2; S(i)<n; i++)
+		{
+			if((n-S(i))%i==0)
+			{
+				ans++;
+			}
+		}
+		printf("%d %d\n", id, ans);
+	}
+	return 0;
+}
