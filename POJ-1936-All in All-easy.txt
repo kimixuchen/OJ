@@ -1,0 +1,45 @@
+/**
+ *POj-1936-All in All
+ *xuchen
+ *2015-10-21 18:48:10
+**/
+/**
+  *dp
+**/
+#include "stdio.h"
+#include <cmath>
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+const int N = 100005;
+
+char s[N], t[N];
+int ls, lt;
+
+int main()
+{
+	int i, j, ls, lt;
+	while(scanf("%s %s", s, t)!=EOF)
+	{
+		ls = strlen(s);
+		lt = strlen(t);
+		i=0;
+		j=0;
+		while(j<lt)
+		{
+			if(s[i]==t[j])
+			{
+				i++;
+				j++;
+			}
+			else
+				j++;
+		}
+		if(i<ls)
+			printf("No\n");
+		else
+			printf("Yes\n");
+	}
+	return 0;
+}
