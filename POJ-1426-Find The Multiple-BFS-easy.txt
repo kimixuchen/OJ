@@ -1,0 +1,42 @@
+/**
+POJ-1426-Find The Multiple
+2015-10-22 23:28:59
+xuchen
+**/
+#include "stdio.h"
+#include <cmath>
+#include <algorithm>
+#include <queue>
+#include <stdlib.h>
+#include <cstring>
+using namespace std;
+
+void plusone(long long &m)
+{
+	int tmp = 10;
+	while(m%tmp >= tmp/10)
+	{
+		m-=tmp/10;
+		tmp*=10;
+	}	
+	tmp/=10;
+	m+=tmp;
+}
+
+int main()
+{
+	int n;
+	long long m;
+	while(scanf("%d", &n)!=EOF)
+	{
+		if(n==0)
+			break;
+		m=1;
+		while(m%n)
+		{
+			plusone(m);
+		}
+		printf("%lld\n", m);
+	}
+	return 0;
+}
