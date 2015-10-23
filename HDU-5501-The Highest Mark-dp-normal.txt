@@ -1,0 +1,57 @@
+/**
+HDU-5501-The Highest Mark
+2015-10-23 23:18:35
+xuchen
+**/
+#include "stdio.h"
+#include <cmath>
+#include <algorithm>
+#include <queue>
+#include <stdlib.h>
+#include <cstring>
+using namespace std;
+
+const int N = 1005;
+const int T = 3005;
+
+struct Prob{
+	int a, b, c;
+};
+
+int dp[T];
+Prob probs[N];
+
+int cmp(const void* a, const void* b)
+{
+	return (((Prob*)b)->b) * (((Prob*)a)->c)
+			- (((Prob*)a)->b) * (((Prob*)b)->c); 
+}
+
+int main()
+{
+	int c, n, t;
+	scanf("%d", &c);
+	while(c--)
+	{
+		memset(dp, 0, sizeof(dp));
+		scanf("%d%d", &n, &t);
+		for(int i=0; i<n; i++)
+		{
+			scanf("%d%d%d", &probs[i].a, &probs[i].b, &probs[i].c);
+		}
+		qsort(probs, n, sizeof(Prob), cmp);
+		
+		for(int i=0; i<n; i++)
+		{
+			for(int j=t; j>=probs[i].c; j--)
+			{
+				dp[j] = max(dp[j], dp[j-probs[i].c] + probs[i].a - j*probs[i].b);
+			}
+		}
+		int ans = -1;
+		for(int i=0; i<=t; i++)
+			ans = max(ans, dp[i]);
+		printf("%d\n", ans);
+	}
+	return 0;
+}
