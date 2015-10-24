@@ -1,0 +1,121 @@
+/**
+ *POj-2104-K-th Number
+ *xuchen
+ *2015-10-20 09:36:23
+**/
+/**
+  *partion tree
+**/
+#include "stdio.h"
+#include <cmath>
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+#define MID(a,b) (a+((b-a)>>1))
+const int N = 100005;
+
+struct node
+{
+	int val[N], num[N];
+};
+
+struct P_Tree
+{
+	int sorted[N];
+	int n, m;
+	node p[20];
+
+	void init()
+	{
+		scanf("%d%d", &n, &m);
+		for(int i=1; i<=n; i++)
+		{
+			scanf("%d", &sorted[i]);
+			p[0].val[i] = sorted[i];
+		}
+		sort(sorted+1, sorted+n+1);
+		build(1, n, 0);
+	}
+
+	void build(int l, int r, int ind)
+	{
+		if(l==r)
+			return;
+
+		int mid = MID(l,r);
+		int midVal = sorted[mid];
+		int isSame=mid-l+1, same=0;
+		int ln = l, rn = mid+1;
+		for(int i=l; i<=r; i++)
+		{
+			if(p[ind].val[i]<midVal)
+				isSame--;
+		}
+		for(int i=l; i<=r; i++)
+		{
+			if(i==l)
+				p[ind].num[i] = 0;
+			else
+				p[ind].num[i] += p[ind].num[i-1];
+
+			if(p[ind].val[i]<midVal)
+			{
+				p[ind+1].val[ln++] = p[ind].val[i];
+				p[ind].num[i]++;
+			}
+			else if(p[ind].val[i]>midVal)
+			{
+				p[ind+1].val[rn++] = p[ind].val[i];
+			}
+			else
+			{
+				same++;
+				if(isSame>=same)
+				{
+					p[ind+1].val[ln++] = p[ind].val[i];
+					p[ind].num[i]++;
+				}
+				else
+				{
+					p[ind+1].val[rn++] = p[ind].val[i];
+				}
+			}
+		}
+		build(l, mid, ind+1);
+		build(mid+1, r, ind+1);
+	}
+
+	int query(int st,int ed,int k,int lft,int rht,int ind)  
+    {  
+        if(lft==rht) return p[ind].val[lft];  
+        int lx,ly,rx,ry,mid=MID(lft,rht);  
+        if(st==lft) lx=0,ly=p[ind].num[ed];  
+        else lx=p[ind].num[st-1],ly=p[ind].num[ed]-p[ind].num[st-1];  
+        if(ly>=k)  
+        {  
+            st=lft+lx;  
+            ed=lft+lx+ly-1;  
+            return query(st,ed,k,lft,mid,ind+1);  
+        }  
+        else  
+        {  
+            rx=st-1-lft+1-lx;  
+            ry=ed-st+1-ly;  
+            st=mid+1+rx;  
+            ed=mid+1+rx+ry-1;  
+            return query(st,ed,k-ly,mid+1,rht,ind+1);  
+        }  
+    }  
+}tree;
+int main()
+{
+	tree.init();
+	int a, b, k;
+	for(int i=0; i<tree.m; i++)
+	{
+		scanf("%d%d%d", &a, &b, &k);
+		printf("%d\n", tree.query(a, b, k, 1, tree.n, 0));
+	}
+	return 0;
+}

@@ -1,0 +1,70 @@
+/**
+ *POj-3974-Palindrome
+ *xuchen
+ *2015-10-19 17:07:46
+**/
+/**
+ *If we use dp, it will be TLE
+ *Manacher is a better choice, whose time will be O(n)
+**/
+#include "stdio.h"
+#include <cmath>
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+const int N = 1000005;
+int p[N<<1];
+char inputs[N];
+char minputs[N<<1];
+
+void init(int len)
+{
+	int pos=2;
+	minputs[0] = '$';
+	minputs[1] = '#';
+	for(int i=0; i<len; i++)
+	{
+		minputs[pos++] = inputs[i];
+		minputs[pos++] = '#';
+	}
+}
+int manacher(int len)
+{
+	int id=0, mx=0, ret=0;
+	len++;
+	len<<=1;
+	for(int i=1; i<len; i++)
+	{
+		if(mx>i)
+			p[i] = min(p[2*id-i], mx-i);
+		else
+			p[i] = 1;
+		for(; minputs[i-p[i]]==minputs[i+p[i]]; p[i]++);
+		if(i+p[i]>mx)
+		{
+			id = i;
+			mx = p[i]+i;
+		}
+		ret = max(ret, p[i]);
+	}
+	return ret-1;
+}
+
+int main()
+{
+	int count=0, len;
+	while(scanf("%s", inputs))
+	{
+		if(inputs[0]=='E')
+			break;
+
+		count++;
+		len = strlen(inputs);
+		memset(minputs, 0, sizeof(minputs));
+		memset(p, 0, sizeof(p));
+		init(len);
+		printf("Case %d: %d\n", count, manacher(len));
+	}
+	return 0;
+}
