@@ -1,0 +1,58 @@
+/**
+ *POj-1322-Chocolate
+ *xuchen
+ *2015-10-26 18:01:28
+**/
+/**
+  *dp
+**/
+#include "stdio.h"
+#include <cmath>
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+const int N = 1000005;
+double dp[2][N];
+const double precision = 1e-9;
+
+int main()
+{
+	int c, n, m;
+	int now;
+	while(scanf("%d", &c)!=EOF)
+	{
+		if(c == 0)
+			break;
+		
+		scanf("%d %d", &n, &m);
+		if(m>n || m>c || (m+n)%2)
+		{
+			printf("0.000\n");
+			continue;
+		}
+		if(n > 1001)
+			n = n%2 ? 1001 : 1000;
+
+		memset(dp, 0, sizeof(dp));
+		now = 0;
+		dp[now][0] = 1.000;
+		
+		for(int i=1; i<=n; i++)
+		{
+			dp[1-now][0] = dp[now][1]/c;
+			for(int j=1; j<=c&&j<=i; j++)
+			{
+				if((i+j)%2)
+				{
+					dp[1-now][j] = 0;
+					continue;
+				}
+				dp[1-now][j] = dp[now][j-1]*(c-j+1)/c + dp[now][j+1]*(j+1)/c;
+			}
+			now = 1-now;
+		}
+		printf("%.3lf\n", dp[now][m]);
+	}
+	return 0;
+}
