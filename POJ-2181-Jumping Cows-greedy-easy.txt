@@ -1,0 +1,39 @@
+/**
+ *POj-2181-Jumping Cows
+ *xuchen
+ *2015-10-29 18:48:21
+**/
+/**
+  *dp
+**/
+#include "stdio.h"
+#include <cmath>
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+const int N = 150005;
+
+int main()
+{
+	int n, p, tmp, min;
+	int ans = 0;
+	scanf("%d", &n);
+	scanf("%d", &p);
+	min = p;
+	for(int i=1; i<n; i++)
+	{
+		scanf("%d", &tmp);
+		if(tmp <= min)
+		{
+			min = tmp;
+			continue;
+		}	
+		ans+=(p-min);
+		p = tmp;
+		min = tmp;
+	}
+	ans+=p;
+	printf("%d\n", ans);
+	return 0;
+}
