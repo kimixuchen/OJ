@@ -1,0 +1,86 @@
+/**
+ *POj-2631-Roads in the North
+ *xuchen
+ *2015-10-30 13:17:02
+**/
+/**
+  *diameter of tree
+  *Watch out! The input data contains null
+  *in which case must print 0
+**/
+#include "stdio.h"
+#include <cmath>
+#include <algorithm>
+#include <vector>
+#include <queue>
+using namespace std;
+
+const int N = 10005;
+struct edge{
+	int to, w, next;
+};
+
+edge edges[N*N];
+int heads[N];
+int lon;
+queue<int> q;
+int dis[N];
+bool vis[N];
+
+void mkEdge(int from, int to, int w)
+{
+	edges[++lon].to = to;
+	edges[lon].w = w;
+	edges[lon].next = heads[from];
+	heads[from] = lon;
+}
+
+void bfs(int node)
+{
+	memset(dis, 0, sizeof(dis));
+	memset(vis, 0, sizeof(vis));
+	int cnode;
+	q.push(node);
+	while(!q.empty())
+	{
+		cnode = q.front();
+		vis[cnode] = true;
+		q.pop();
+		for(int d = heads[cnode]; d!=0; d = edges[d].next)
+		{
+			if(vis[edges[d].to])
+				continue;
+			dis[edges[d].to] = dis[cnode]+edges[d].w;
+			q.push(edges[d].to);
+		}
+	}
+}
+
+int main()
+{
+	int from=0, to, w, n=0;
+	while(scanf("%d%d%d", &from, &to, &w)!=EOF)
+	{
+		mkEdge(from, to, w);
+		mkEdge(to, from, w);
+	}
+
+	int tmpnode=0, tmpmax = 0;
+	bfs(from);
+	for(int i=1; i<N; i++)
+	{
+		if(tmpmax<dis[i])
+		{
+			tmpmax = dis[i];
+			tmpnode = i;
+		}
+	}
+	bfs(tmpnode);
+	for(int i=1; i<N; i++)
+	{
+		if(tmpmax<dis[i])
+			tmpmax = dis[i];
+	}
+	printf("%d\n", tmpmax);
+	return 0;
+}
