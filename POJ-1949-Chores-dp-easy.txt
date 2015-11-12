@@ -1,0 +1,132 @@
+/**
+POJ-1949-Chores
+2015-11-12 20:12:41
+xuchen
+**/
+/**
+ * Topological Sort
+ **/
+#include "stdio.h"
+#include <cmath>
+#include <algorithm>
+#include <queue>
+#include <stdlib.h>
+#include <cstring>
+using namespace std;
+
+const int N = 10005;
+struct Edge{
+	int to, next;
+};
+struct Node{
+	int _id;
+	int e;
+	int pres, v;
+	int d, f;
+	bool visited;
+};
+
+Edge edges[N*100];
+Node heads[N];
+int sortedChores[N];
+int preVs[N];
+int cnt;
+int _time;
+int ans;
+
+int cmp(const void *a, const void *b)
+{
+	return ((Node*)b)->f - ((Node*)a)->f;
+}
+
+void addEdge(int u, int v)
+{
+	cnt++;
+	edges[cnt].to = v;
+	edges[cnt].next = heads[u].e;
+	heads[v].pres++;
+	heads[u].e = cnt;
+}
+
+void DFS_FIRST(int cur)
+{
+	heads[cur].visited = true;
+	_time++;
+	heads[cur].d = _time;
+	int to;
+	for(int i=heads[cur].e; i!=0; i=edges[i].next)
+	{
+		to = edges[i].to;
+		if(heads[to].visited!=true)
+			DFS_FIRST(to);
+	}
+	_time++;
+	heads[cur].f = _time;
+}
+
+void DFS(int n)
+{
+	for(int i=1; i<=n; i++)
+	{
+		if(heads[i].visited!=true)
+		{
+			DFS_FIRST(i);
+		}	
+	}
+}
+
+void printSorted(int s, int e)
+{
+	for(int i=s; i<=e; i++)
+		printf("%d ", heads[i]._id);
+	printf("\n");
+
+}
+void printF(int s, int e)
+{
+	for(int i=s; i<=e; i++)
+		printf("%d ", heads[i].f);
+	printf("\n");
+}
+
+void topologicalSort(int s, int n)
+{
+	//DFS(s);
+	//qsort(heads+1, n, sizeof(Node), cmp);
+	int to;
+	for(int i=1; i<=n; i++)
+	{
+		for(int j=heads[i].e; j!=0; j=edges[j].next)
+		{
+			to = edges[j].to;
+			if(heads[i].v+preVs[i]>preVs[to])
+				preVs[to] = heads[i].v+preVs[i];	
+		}
+	}
+	for(int i=1; i<=n; i++)
+	{
+		if(heads[i].v+preVs[i]>ans)
+			ans = heads[i].v+preVs[i];
+	}
+}
+
+int main()
+{
+	int n, v, pi, p;
+	scanf("%d", &n);
+	for(int i=1; i<=n; i++)
+	{
+		heads[i]._id = i;
+		scanf("%d", &v);
+		heads[i].v = v;
+		scanf("%d", &pi);
+		for(int j=0; j<pi; j++)
+		{
+			scanf("%d", &p);
+			addEdge(p, i);
+		}
+	}
+	topologicalSort(1, n);
+	printf("%d\n", ans);
+	return 0;
+}
