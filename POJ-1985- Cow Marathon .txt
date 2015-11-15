@@ -1,0 +1,75 @@
+//POJ - 1003-Hangover
+#include <cstdio>
+#include <iostream>
+#include <cstring>
+#include <cstdlib>
+#include <cmath>
+#include <vector>
+#include <algorithm>
+#include <queue>
+using namespace std;
+
+const int N = 44000;
+
+struct Node  
+{  
+    int to,cap;  
+};  
+vector<Node> v[N];
+bool flag[N];
+int dis[N];
+int m, n, key, maxn;
+
+int bfs(int k)
+{
+	memset(flag, false, sizeof(flag));
+	memset(dis, 0, sizeof(dis));
+	queue<int> q;
+	int curnode;
+	q.push(k);
+	flag[k] = true;
+	while(!q.empty())
+	{
+		curnode = q.front();
+		for(int i=0; i<v[curnode].size(); i++)
+		{
+			Node tmp = v[curnode][i];
+			if(!flag[tmp.to])
+			{
+				flag[tmp.to] = true;
+				dis[tmp.to] = dis[curnode] + tmp.cap;
+				q.push(tmp.to);
+				if(dis[tmp.to] > maxn)
+				{
+					maxn = dis[tmp.to];
+					key = tmp.to;
+				}
+			}
+		}
+		q.pop();
+	}
+	return key;
+}
+
+int main()
+{
+	int u, x, dis;
+	char s[4];
+	while(~scanf("%d%d", &m, &n))
+	{
+		for(int i=0; i<n; i++)
+		{
+			scanf("%d%d%d%s", &u, &x, &dis, s);	
+			v[u].push_back((Node){x,dis});  
+            v[x].push_back((Node){u,dis});
+		}
+		maxn = 0;
+		key = bfs(1);
+		maxn = 0;
+		bfs(key);
+		printf("%d\n", maxn);
+		for(int i=0; i<=n; i++)
+			v[i].clear();
+	}
+	return 0;
+}
