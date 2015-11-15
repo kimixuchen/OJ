@@ -1,0 +1,56 @@
+/**
+ *POJ-3069-Saruman's Army
+ *xuchen
+ *2015-11-15 16:22:50
+**/
+#include "stdio.h"
+#include <cstring>
+#include <cmath>
+#include <algorithm>
+#include <vector>
+#include <queue>
+using namespace std;
+
+const int N = 1005;
+int a[N];
+
+int main()
+{
+	int r, n, length, num;
+	int prepos, pos;
+	while(scanf("%d%d", &r, &n))
+	{
+		if(r==-1 && n==-1)
+			break;
+
+		length = -1;
+		num = 0;
+		memset(a, 0, sizeof(a));
+		for(int i=0; i<n; i++)
+		{
+			scanf("%d", &a[i]);
+		}
+
+		sort(a, a+n);
+		for(int i=0; i<n; i++)
+		{
+			if(length<a[i])
+			{
+				num++;
+				length = a[i]+r;
+				prepos = a[i];
+			}
+			else
+			{
+				if(a[i]-prepos <= r)
+				{
+					length = a[i]+r;	
+					
+				}
+			}
+		}
+
+		printf("%d\n", num);
+	}
+	return 0;
+}
