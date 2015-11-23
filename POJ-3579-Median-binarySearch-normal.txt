@@ -1,0 +1,54 @@
+/**
+POJ-3579-Median
+2015-11-23 18:32:25
+xuchen
+**/
+/**
+ **/
+#include "stdio.h"
+#include <cmath>
+#include <algorithm>
+#include <queue>
+#include <stdlib.h>
+#include <cstring>
+using namespace std;
+
+const int N = 100005;
+int a[N];
+int n;
+int C_N2;
+
+//judge if m is too large
+bool judge(int m)
+{
+	int count = 0;
+	for(int i=0; i<n; i++)	
+	{
+		count += a+n - lower_bound(a+i+1, a+n, a[i]+m);
+	}
+	return count <= C_N2/2;
+}
+int main()
+{
+	while(scanf("%d", &n)!=EOF)
+	{
+		C_N2 = n*(n-1)/2;
+		for(int i=0; i<n; i++)
+			scanf("%d", &a[i]);
+		sort(a, a+n);
+
+		int low = 0;
+		int up = *max_element(a, a+n) - *min_element(a, a+n) +1;
+		int mid;
+		while(up-low > 1)
+		{
+			mid = (low+up)>>1;
+			if(judge(mid))
+				up = mid;
+			else
+				low = mid;
+		}
+		printf("%d\n", low);
+	}	
+	return 0;
+}
